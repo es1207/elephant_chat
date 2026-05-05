@@ -1,0 +1,10 @@
+2026-05-05 19:52:50,547 - INFO - user=1932084490@qq.com, msg=hello
+2026-05-05 19:52:57,509 - INFO - HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-05 19:53:12,629 - INFO - user=1932084490@qq.com, msg=我是小红
+2026-05-05 19:53:21,858 - INFO - HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-05 19:53:33,371 - INFO - user=1932084490@qq.com, msg=我刚才说什么
+2026-05-05 19:53:43,115 - INFO - HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-05 19:53:56,076 - INFO - user=1932084490@qq.com, msg=1+1等于多少
+2026-05-05 19:54:01,516 - INFO - HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-05 19:54:33,204 - INFO - user=1932084490@qq.com, msg=李白字什么，号什么
+2026-05-05 19:54:41,169 - INFO - HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AI Chat</title>
+    <style>
+        body {
+            font-family: Arial;
+            width: 500px;
+            margin: auto;
+        }
+        #chat {
+            border: 1px solid #ccc;
+            height: 400px;
+            overflow-y: scroll;
+            padding: 10px;
+        }
+        input {
+            width: 80%;
+            height: 30px;
+        }
+        button {
+            height: 35px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>AI聊天（Day6）</h2>
+
+<div id="chat"></div>
+
+<input id="msg" placeholder="输入内容">
+<button onclick="send()">发送</button>
+
+<script>
+const user_id = Math.random().toString(36).substring(2); // 随机用户ID
+
+function send() {
+    let msg = document.getElementById("msg").value;
+
+    if (!msg) return;
+
+    let chat = document.getElementById("chat");
+
+    // 显示用户消息
+    chat.innerHTML += "<p><b>你：</b>" + msg + "</p>";
+
+    fetch(`http://127.0.0.1:8000/chat?msg=${msg}&user_id=${user_id}`)
+        .then(res => res.json())
+        .then(data => {
+            chat.innerHTML += "<p><b>AI：</b>" + data.reply + "</p>";
+            chat.scrollTop = chat.scrollHeight;
+        });
+
+    document.getElementById("msg").value = "";
+}
+
+// 👉 回车发送
+document.getElementById("msg").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        send();
+    }
+});
+</script>
+
+</body>
+</html>
