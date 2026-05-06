@@ -32,7 +32,7 @@ logging.basicConfig(
 
 # ================= API =================
 client = OpenAI(
-    api_key="sk-你的key",  # ⚠️ 用你自己的
+    api_key="sk-db253c0dc8624d999879e2b15e0dd788",  # ⚠️ 用你自己的
     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
 )
 
@@ -84,7 +84,7 @@ last_request_time = {}
 # ================= ⭐ 首页（关键新增） =================
 @app.get("/", response_class=HTMLResponse)
 def home():
-    with open("day8.html", "r", encoding="utf-8") as f:
+    with open("index.html", "r", encoding="utf-8") as f:
         return f.read()
 
 # ================= 登录 =================
