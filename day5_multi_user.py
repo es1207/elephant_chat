@@ -4,6 +4,7 @@ import logging
 import time
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from openai import OpenAI
 import sys
@@ -31,7 +32,7 @@ logging.basicConfig(
 
 # ================= API =================
 client = OpenAI(
-    api_key="sk-db253c0dc8624d999879e2b15e0dd788",  # ← 替换
+    api_key="sk-你的key",  # ⚠️ 用你自己的
     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
 )
 
@@ -51,7 +52,7 @@ if os.path.exists(DATA_FILE):
 else:
     user_histories = {}
 
-# ================= 错误体系（Day17核心） =================
+# ================= 错误体系 =================
 class ErrorCode:
     SUCCESS = 0
     INVALID_PARAM = 1001
@@ -80,13 +81,13 @@ class ChatRequest(BaseModel):
 # ================= 限流 =================
 last_request_time = {}
 
-# ================= 接口 =================
+# ================= ⭐ 首页（关键新增） =================
+@app.get("/", response_class=HTMLResponse)
+def home():
+    with open("day8.html", "r", encoding="utf-8") as f:
+        return f.read()
 
-@app.get("/")
-def root():
-    return success({"msg": "OK"})
-
-# 登录
+# ================= 登录 =================
 @app.get("/login")
 def login(username: str):
     if username not in users:
@@ -97,7 +98,7 @@ def login(username: str):
 
     return success({"user_id": username})
 
-# 聊天（Day12-17综合）
+# ================= 聊天 =================
 @app.post("/chat")
 def chat(req: ChatRequest):
     try:
@@ -107,7 +108,7 @@ def chat(req: ChatRequest):
         if not msg:
             return error(ErrorCode.INVALID_PARAM, "msg不能为空")
 
-        # 限流（Day16）
+        # 限流
         now = time.time()
         if user_id in last_request_time:
             if now - last_request_time[user_id] < 2:
@@ -121,7 +122,7 @@ def chat(req: ChatRequest):
 
         history = user_histories[user_id]
 
-        # 上下文裁剪（Day15）
+        # 上下文裁剪
         MAX_HISTORY = 10
         history = history[-MAX_HISTORY:]
 
@@ -135,7 +136,6 @@ def chat(req: ChatRequest):
         reply = str(response.choices[0].message.content)
 
         history.append({"role": "assistant", "content": reply})
-
         user_histories[user_id] = history
 
         with open(DATA_FILE, "w", encoding="utf-8") as f:
@@ -147,12 +147,12 @@ def chat(req: ChatRequest):
         logging.error(str(e))
         return error(ErrorCode.SERVER_ERROR, "服务器异常")
 
-# 历史
+# ================= 历史 =================
 @app.get("/history")
 def history(user_id: str):
     return success({"history": user_histories.get(user_id, [])})
 
-# 清空
+# ================= 清空 =================
 @app.get("/clear")
 def clear(user_id: str):
     user_histories[user_id] = []

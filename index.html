@@ -53,10 +53,11 @@ button { width: 80px; }
 
 let user_id = localStorage.getItem("user_id");
 
+// ================= 登录 =================
 function login() {
     let username = document.getElementById("username").value;
 
-    fetch(`http://127.0.0.1:8000/login?username=${username}`)
+    fetch("/login?username=" + username)
     .then(res => res.json())
     .then(data => {
         if (data.code === 0) {
@@ -67,6 +68,7 @@ function login() {
     });
 }
 
+// ================= 渲染 =================
 function addMessage(text, type) {
     let div = document.createElement("div");
     div.className = "msg " + type;
@@ -74,6 +76,7 @@ function addMessage(text, type) {
     document.getElementById("chat").appendChild(div);
 }
 
+// ================= 发送 =================
 function send() {
     let msg = document.getElementById("msg").value;
 
@@ -84,7 +87,7 @@ function send() {
 
     addMessage("你：" + msg, "user");
 
-    fetch("http://127.0.0.1:8000/chat", {
+    fetch("/chat", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -106,8 +109,9 @@ function send() {
     document.getElementById("msg").value = "";
 }
 
+// ================= 清空 =================
 function clearChat() {
-    fetch(`http://127.0.0.1:8000/clear?user_id=${user_id}`)
+    fetch("/clear?user_id=" + user_id)
     .then(() => {
         document.getElementById("chat").innerHTML = "";
     });
